@@ -44,40 +44,35 @@ sub Run {
     # get data
     my %Data = ();
 
-    # initial sql statement with mandatory data
-    my $SQL_PRE = "
-        SELECT cc.quota AS Cquota,
-               Sum(ta.time_unit) AS Uquota
-        FROM   customer_company cc
-               INNER JOIN ticket t
-                      ON t.customer_id = cc.customer_id
-               LEFT OUTER JOIN time_accounting ta
-                      ON ta.ticket_id = t.id
-        WHERE  cc.customer_id = (SELECT customer_id
-                                FROM    ticket
-                                WHERE   id = ?)
-               AND ta.time_unit IS NOT NULL
-        GROUP  BY cc.customer_id";
-
-    # additional sql statement matching for the recurrence period
+    # auxiliary sql statement for the recurrence period
     my $Recurrence = $ConfigObject->Get('SupportQuota::Preferences::Recurrence');
     my $RecurrenceLabel = "";
     my $SQL_RECURRENCE = "";
     if ( $Recurrence eq 'month' ) {
         $RecurrenceLabel = "(Monthly)";
         $SQL_RECURRENCE = "
-               AND Extract(year FROM ta.create_time) = Extract(year FROM Now())
-               AND Extract(month FROM ta.create_time) = Extract(month FROM Now())";
+                AND EXTRACT(YEAR FROM ta.create_time) = EXTRACT(YEAR FROM NOW())
+                AND EXTRACT(MONTH FROM ta.create_time) = EXTRACT(MONTH FROM NOW())";
     } elsif ( $Recurrence eq 'year' ) {
         $RecurrenceLabel = "(Yearly)";
         $SQL_RECURRENCE = "
-               AND Extract(year FROM ta.create_time) = Extract(year FROM Now())";
+                AND EXTRACT(YEAR FROM ta.create_time) = EXTRACT(YEAR FROM NOW())";
     } else {
         $RecurrenceLabel = "";
     }
 
-    # compose final sql statement
-    my $SQL = "${SQL_PRE} ${SQL_RECURRENCE}";
+    # main sql statement with mandatory data
+    my $SQL = "
+        SELECT  cc.quota AS Cquota,
+                SUM(COALESCE(ta.time_unit, 0)) AS Uquota
+        FROM    customer_company cc
+        LEFT OUTER JOIN ticket t
+                ON t.customer_id = cc.customer_id
+        LEFT OUTER JOIN time_accounting ta
+                ON ta.ticket_id = t.id
+                ${SQL_RECURRENCE}
+        WHERE   cc.customer_id = (SELECT customer_id FROM ticket WHERE id = ?)
+        GROUP   BY cc.customer_id";
 
     return if !$DBObject->Prepare(
         SQL   => $SQL,
