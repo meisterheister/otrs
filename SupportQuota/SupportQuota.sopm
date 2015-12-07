@@ -34,12 +34,12 @@
     <IntroInstall Type="post" Lang="pt_BR" Title="Obrigado!">Não deixe de alterar o seu Kernel/Config.pm para incluir o campo 'Cota' em 'AdminCustomerCompany'. Veja o README.md do módulo para um exemplo. Obrigado por instalar o módulo Cota de Suporte.</IntroInstall>
     <DatabaseInstall Type="pre">
         <TableAlter Name="customer_company">
-            <ColumnAdd Name="squota" Type="SMALLINT"/>
+            <ColumnAdd Name="cquota" Type="SMALLINT"/>
         </TableAlter>
     </DatabaseInstall>
     <DatabaseUninstall>
         <TableAlter Name="customer_company">
-            <ColumnDrop Name="squota"/>
+            <ColumnDrop Name="cquota"/>
         </TableAlter>
     </DatabaseUninstall>
 </otrs_package>
