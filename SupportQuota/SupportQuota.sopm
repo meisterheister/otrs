@@ -20,8 +20,9 @@
     <ChangeLog Version="1.0.2" Date="2015-02-25 09:03:53">Sanitize undefined quotas to avoid log errors.</ChangeLog>
     <ChangeLog Version="1.0.3" Date="2015-07-31 23:04:39">Fix a PostgreSQL error condition.</ChangeLog>
     <ChangeLog Version="1.0.4" Date="2015-12-04 04:09:24">Changes query logic to properly deal with quota reset for period recurrences.</ChangeLog>
-    <ChangeLog Version="2.0.0" Date="2015-12-06 21:32:32">Migration to OTRS5 framework.</ChangeLog>
+    <ChangeLog Version="2.0.0" Date="2015-12-06 21:32:32">Update to Framework v5. For Framework v4 support, get SupportQuota v1.0.4.</ChangeLog>
     <Filelist>
+        <File Permission="644" Location="doc/en/SupportQuota.pod"></File>
         <File Permission="644" Location="Kernel/Config/Files/SupportQuota.xml"></File>
         <File Permission="644" Location="Kernel/Language/de_SupportQuota.pm"></File>
         <File Permission="644" Location="Kernel/Language/pt_BR_SupportQuota.pm"></File>
