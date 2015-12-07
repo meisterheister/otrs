@@ -1,6 +1,5 @@
 # --
-# Kernel/Language/pt_BR_SupportQuota.pm
-# Copyright (C) 2014 denydias
+# Copyright (C) 2014-2016 Deny Dias, https://mexapi.macpress.com.br/foss
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you

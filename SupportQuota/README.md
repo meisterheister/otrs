@@ -2,23 +2,28 @@
 
 This OTRS Add-on module provides an easy to use interface to control customer contracted work unit quotas.
 
-By entering a quota to each Customer Company in your OTRS system and taking care to set the proper 'CustomerCompanyID' on your tickets (easy if you use PostMaster Filters), this add-on is able to get the total work unit quota available to a particular customer, how many work units were used in the current period (current month) and how many work units are available to that customer in the same period. If the available quota is negative, there will be extra bucks in the end of the month.
+By entering a quota to each Customer Company in your OTRS system and taking care to set the proper 'CustomerCompanyID' on your tickets (easy if you use PostMaster Filters), this add-on is able to get the total work unit quota available to a particular customer, how many work units were used in the current period and how many work units are available to that customer in the same period. Periods can be the current month or year. If the available quota is negative, there will be extra bucks in the end of the period.
 
-The above information then appears in a widget under agent TicketZoom interface so your agents can
-easily decide what to do based on your process on how to charge (or not) for beyond quota customers.
+The above information then appears in a widget under AgentTicketZoom interface so agents can easily decide what to do based on your process on how to charge (or not) for beyond quota customers.
 
 The screenshot bellow shows how the Support Quota works in the agent GUI:
 
 ![Support Quota Add-on in action](https://raw.githubusercontent.com/denydias/otrs/master/SupportQuota/SupportQuota.png)
 
+## OTRS Framework Version Requirements
+
+- **Support Quota 0.x Series:** compatible with OTRS 3.3.x only.
+- **Support Quota 1.x Series:** compatible with OTRS 4.x only.
+- **Support Quota 2.x Series:** compatible with OTRS 5.x only.
+
 ## Instalation
 
-Right in this repo, there is an [OTRS Package](https://github.com/denydias/otrs/tree/master/packages) (SupportQuota-0.0.*.opm) ready to install. Download it, open your OTRS and go to Admin > Package Manager. Then choose the downloaded package under 'Install Package' button.
+Right in this repo, there is an [OTRS Package](https://github.com/denydias/otrs/tree/master/packages) named `SupportQuota-*.opm` ready to install. Download it, open your OTRS and go to Admin > Package Manager. Then choose the downloaded package in 'Install Package'.
 
 The package installation takes care of the only database change required. For the matter of the record, it is:
 
 ```sql
-ALTER TABLE customer_company ADD quota SMALLINT;
+ALTER TABLE customer_company ADD cquota SMALLINT;
 ```
 
 After installation is done, you have to **manually** change your `Kernel/Config.pm` file as per the example bellow:
@@ -53,7 +58,7 @@ After installation is done, you have to **manually** change your `Kernel/Config.
             [ 'CustomerCompanyCountry', 'Country',    'country',     1, 0, 'var', '', 0 ],
             [ 'CustomerCompanyURL',     'URL',        'url',         1, 0, 'var', '$Data{"CustomerCompanyURL"}', 0 ],
             [ 'CustomerCompanyComment', 'Comment',    'comments',    1, 0, 'var', '', 0 ],
-            [ 'CustomerCompanyQuota',   'Quota',      'quota',       1, 0, 'int', '', 0 ],
+            [ 'CustomerCompanyQuota',   'Quota',      'cquota',      1, 0, 'int', '', 0 ],
             [ 'ValidID',                'Valid',      'valid_id',    0, 1, 'int', '', 0 ],
         ],
     };
@@ -65,6 +70,26 @@ Optionally, you might want to check `Admin > Sysconfig > SupportQuota > SupportQ
 
 And that's it. Enjoy your extra $$$.
 
+## Upgrading from Support Quota 1.x (OTRS4) to Support Quota 2.x (OTRS5)
+
+Due do OTRS5 framework changes, if you already use [Support Quota 1.x series](https://github.com/denydias/otrs/releases) in OTRS4, you have to promote some changes in your OTRS backend before upgrade to Support Quota 2.x series.
+
+1. [Upgrade OTRS 4 to OTRS 5](https://otrs.github.io/doc/manual/admin/stable/en/html/upgrading.html).
+
+2. Run the following query in your OTRS database:
+
+    ```sql
+    ALTER TABLE `customer_company` CHANGE `quota` `cquota` SMALLINT( 6 ) NULL DEFAULT NULL ;
+    ```
+
+3. Change `Kernel/Config.pm` file so it reads:
+
+    ```perl
+    [ 'CustomerCompanyQuota',   'Quota',      'cquota',      1, 0, 'int', '', 0 ],
+    ```
+
+4. Upgrade to Support Quota 2.x.
+
 ## How To Use It
 
 There are many use cases (aka support process) where this add-on could fit. I can't imagine it all. As such, I'll describe how one can use it under a use case I know better: myself.
@@ -73,7 +98,7 @@ There are many use cases (aka support process) where this add-on could fit. I ca
 
 2. For each customer company, set the quota for that customer. This is an integer from 0 to 65535 which corresponds to the customer contract (i.e. 8h, 16h, 24h, 720h). Leave it blank or 0 (zero) if you don't know or the customer has an unlimited service.
 
-3. (OPTIONAL, but recommended) Set a Postmaster Filter for any of your customer companies like this:
+3. (OPTIONAL, but highly recommended) Set a Postmaster Filter for any of your customer companies like this:
 
     ```
     From: .*@customerdomain.com
@@ -84,7 +109,7 @@ There are many use cases (aka support process) where this add-on could fit. I ca
 
     **Caveat:** If an agent open a ticket, the 'CustomerCompanyID' should be set manually. The same applies for phone tickets.
 
-4. (OPTIONAL, but recommended) Go to Admin > SysConfig > Ticket > Frontend::Agent and set:
+4. (OPTIONAL, but highly recommended) Go to Admin > SysConfig > Ticket > Frontend::Agent and set:
 
    ```
    Ticket::Frontend::TimeUnits: (work units)
@@ -97,7 +122,7 @@ There are many use cases (aka support process) where this add-on could fit. I ca
 
 ### Usage Notes
 
-The Support Quota widget in TicketZoom shows the quota for the current month only and just for the particular 'CustomerCompanyID' set to the ticket. If you need to get a report by the end of the month to charge the extra work units, you must go to Admin > SQL Box and run a query like:
+The Support Quota widget in AgentTicketZoom shows the quota for the current period only and just for the particular 'CustomerCompanyID' set to the ticket. If you need to get a report by the end of a particular period to charge the extra work units, you must go to Admin > SQL Box and run a query like:
 
 ```sql
 SELECT t.tn "Ticket #",
@@ -108,17 +133,17 @@ SELECT t.tn "Ticket #",
 FROM ticket t
    LEFT JOIN time_accounting ta ON ta.ticket_id=t.id
 WHERE
-   ta.time_unit is not null
+   ta.time_unit IS NOT NULL
    AND t.customer_id="CustomerCompanyID"
-   AND year(t.create_time) = year(now())
-   AND month(t.create_time) = month(now())
+   AND EXTRACT(YEAR FROM ta.create_time) = EXTRACT(YEAR FROM NOW())
+   AND EXTRACT(MONTH FROM ta.create_time) = EXTRACT(MONTH FROM NOW())
 GROUP BY t.tn
 ORDER BY t.create_time
 ```
 
-Don't forget to change `CustomerCompanyID` above to the one the matches your customer in OTRS.
+Don't forget to change `CustomerCompanyID` above to the one the matches your customer in OTRS. You may get a report for other periods by replacing `NOW()` inside `EXTRACT()` clauses with a full date, for instance: `2015-01-01`.
 
-From within SQL Box you can save a CSV file so you can share straight with the customer.
+From within SQL Box you can save a CSV file so you can share the report.
 
 ## To Do
 
@@ -150,7 +175,7 @@ At http://forums.otterhub.org/viewtopic.php?f=64&t=25727&p=102624#p102527.
 
 To write this OTRS add-on, my first one, I counted on many references. Bellow I list the main ones:
 
-1. [OTRS 3.3 - Developer Manual](http://otrs.github.io/doc/manual/developer/3.3/en/html/index.html)
+1. [OTRS - Developer Manual](https://otrs.github.io/doc/manual/developer/stable/en/html/index.html)
 
 2. From OtterHub e.V. User Forums:
 
@@ -170,7 +195,7 @@ I'd like to acknowledge and thanks all the above list.
 
 ## License
 
-Copyright (C) 2001-2014 Deny Dias.
+Copyright (C) 2014-2016 Deny Dias, https://mexapi.macpress.com.br/foss
 
 With kind contributions by:
 

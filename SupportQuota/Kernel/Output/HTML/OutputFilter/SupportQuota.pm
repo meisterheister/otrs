@@ -1,22 +1,21 @@
 # --
-# Kernel/Output/HTML/SupportQuota.pm
-# Copyright (C) 2001-2014 Deny Dias, http://mexapi.macpress.com.br/
+# Copyright (C) 2014-2016 Deny Dias, https://mexapi.macpress.com.br/foss
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
 # did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
 # --
 
-package Kernel::Output::HTML::SupportQuota;
+package Kernel::Output::HTML::OutputFilter::SupportQuota;
 
 use strict;
 use warnings;
 
-our @ObjectDependencies = qw(
-    Kernel::Config
-    Kernel::System::DB
-    Kernel::Output::HTML::Layout
-    Kernel::System::Web::Request
+our @ObjectDependencies = (
+    'Kernel::Config',
+    'Kernel::System::DB',
+    'Kernel::Output::HTML::Layout',
+    'Kernel::System::Web::Request'
 );
 
 sub new {
@@ -32,114 +31,130 @@ sub new {
 sub Run {
     my ( $Self, %Param ) = @_;
 
+    # load required objects
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
     my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
 
+    # get template name
+    my $Templatename = $Param{TemplateFile} || '';
+
+    # return if template is empty
+    return 1 if !$Templatename;
+
+    # return if not in AgentTicketZoom
+    return 1 if $Templatename ne 'AgentTicketZoom';
+
+    # get the TicketID
     $Self->{TicketID} = $ParamObject->GetParam( Param => 'TicketID' );
 
+    # return if TicketID is empty
     return if !$Self->{TicketID};
 
     # get data
     my %Data = ();
 
     # auxiliary sql statement for the recurrence period
-    my $Recurrence = $ConfigObject->Get('SupportQuota::Preferences::Recurrence');
+    my $Recurrence      = $ConfigObject->Get('SupportQuota::Preferences::Recurrence');
     my $RecurrenceLabel = "";
-    my $SQL_RECURRENCE = "";
+    my $SqlRecurrence   = "";
     if ( $Recurrence eq 'month' ) {
         $RecurrenceLabel = "(Monthly)";
-        $SQL_RECURRENCE = "
+        $SqlRecurrence   = "
                 AND EXTRACT(YEAR FROM ta.create_time) = EXTRACT(YEAR FROM NOW())
                 AND EXTRACT(MONTH FROM ta.create_time) = EXTRACT(MONTH FROM NOW())";
-    } elsif ( $Recurrence eq 'year' ) {
+    }
+    elsif ( $Recurrence eq 'year' ) {
         $RecurrenceLabel = "(Yearly)";
-        $SQL_RECURRENCE = "
+        $SqlRecurrence   = "
                 AND EXTRACT(YEAR FROM ta.create_time) = EXTRACT(YEAR FROM NOW())";
-    } else {
+    }
+    else {
         $RecurrenceLabel = "";
     }
 
     # main sql statement with mandatory data
     my $SQL = "
-        SELECT  cc.quota AS Cquota,
+        SELECT  cc.cquota AS Cquota,
                 SUM(COALESCE(ta.time_unit, 0)) AS Uquota
         FROM    customer_company cc
         LEFT OUTER JOIN ticket t
                 ON t.customer_id = cc.customer_id
         LEFT OUTER JOIN time_accounting ta
                 ON ta.ticket_id = t.id
-                ${SQL_RECURRENCE}
+                ${SqlRecurrence}
         WHERE   cc.customer_id = (SELECT customer_id FROM ticket WHERE id = ?)
         GROUP   BY cc.customer_id";
 
+    # return if result set is empty
     return if !$DBObject->Prepare(
         SQL   => $SQL,
         Bind  => [ \$Self->{TicketID} ],
         Limit => 1,
     );
+
+    # process result set
     while ( my @Row = $DBObject->FetchrowArray() ) {
+
         # initialize undefined data sources
         if ( defined $Row[0] ) {
             $Data{ContractQuota} = $Row[0];
-        } else {
+        }
+        else {
             $Data{ContractQuota} = 0;
         }
         if ( defined $Row[1] ) {
-            $Data{UsedQuota}     = $Row[1];
-        } else {
-            $Data{UsedQuota}     = 0;
+            $Data{UsedQuota} = $Row[1];
+        }
+        else {
+            $Data{UsedQuota} = 0;
         }
     }
 
-    # format and calculate remaining data
+    # format and calculate remaining information
     my $ContractQuota  = sprintf '%.1f', $Data{ContractQuota};
     my $UsedQuota      = sprintf '%.1f', $Data{UsedQuota};
     my $AvailableQuota = sprintf '%.1f', $Data{ContractQuota} - $Data{UsedQuota};
 
-    # exit if no quota is configured for the customer and this is not desired in config
+    # return if config does not allow widget display if empty customer quota
     if (
         $ContractQuota == 0
         && $ConfigObject->Get('SupportQuota::Preferences::EmptyContractDisplay') == 0
-    )
-    { return; }
+        )
+    {
+        return;
+    }
 
-    my $Template = q~
-            <div class="WidgetSimple">
-                <div class="Header">
-                    <h2>[% Translate("Customer Support Quota") | html %] [% Translate(Data.Recurrence) | html %]</h2>
-                </div>
-                <div class="Content">
-                    <fieldset class="TableLike FixedLabelSmall Narrow">
-                        <label>[% Translate("Available") | html %]:</label>
-                        <p class="Value">[% Data.Available | html %]</p>
-                        <div class="Clear"></div>
-                        <label>[% Translate("Used") | html %]:</label>
-                        <p class="Value">[% Data.Used | html %]</p>
-                        <div class="Clear"></div>
-                        <label>[% Translate("Contracted") | html %]:</label>
-                        <p class="Value">[% Data.Contracted | html %]</p>
-                        <div class="Clear"></div>
-                    </fieldset>
-                </div>
-            </div>
-    ~;
+    # information for AgentTicketZoom
+    if ( $Templatename eq 'AgentTicketZoom' ) {
 
-    my $HTML = $LayoutObject->Output(
-        Template => $Template,
-        Data     => {
-            Available  => $AvailableQuota,
-            Used       => $UsedQuota,
-            Contracted => $ContractQuota,
-            Recurrence => $RecurrenceLabel
-        },
-    );
+        # set template and information values
+        my $Snippet = $LayoutObject->Output(
+            TemplateFile => 'SupportQuotaAgent',
+            Data         => {
+                Available  => $AvailableQuota,
+                Used       => $UsedQuota,
+                Contracted => $ContractQuota,
+                Recurrence => $RecurrenceLabel
+                }
+        );
 
-    # add information
-    ${ $Param{Data} } =~ s{ (\[\% \s+ RenderBlockStart\("CustomerTable"\) \s+ \%\]) }{ $HTML $1 }ixms;
+        # get the position for the output, default to bottom
+        my $Position = $ConfigObject->Get('SupportQuota::Preferences::Position') || 'bottom';
 
-    return $Param{Data};
+        # add information according to the requested position
+        if ( $Position eq 'top' ) {
+            ${ $Param{Data} } =~ s{(<div \s+ class="SidebarColumn">)}{$1 $Snippet}xsm;
+        }
+        else {
+            ${ $Param{Data} } =~ s{(</div> \s+ <div \s+ class="ContentColumn)}{ $Snippet $1 }xms;
+        }
+    }
+
+    # done, return information
+    return ${ $Param{Data} };
+
 }
 
 1;

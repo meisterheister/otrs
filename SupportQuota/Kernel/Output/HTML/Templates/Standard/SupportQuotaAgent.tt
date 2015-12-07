@@ -1,0 +1,26 @@
+# --
+# Copyright (C) 2014-2016 Deny Dias, https://mexapi.macpress.com.br/foss
+# --
+# This software comes with ABSOLUTELY NO WARRANTY. For details, see
+# the enclosed file COPYING for license information (AGPL). If you
+# did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
+# --
+
+            <div class="WidgetSimple">
+                <div class="Header">
+                    <h2>[% Translate("Customer Support Quota") | html %] [% Translate(Data.Recurrence) | html %]</h2>
+                </div>
+                <div class="Content">
+                    <fieldset class="TableLike FixedLabelSmall Narrow">
+                        <label>[% Translate("Available") | html %]:</label>
+                        <p class="Value">[% Data.Available | html %]</p>
+                        <div class="Clear"></div>
+                        <label>[% Translate("Used") | html %]:</label>
+                        <p class="Value">[% Data.Used | html %]</p>
+                        <div class="Clear"></div>
+                        <label>[% Translate("Contracted") | html %]:</label>
+                        <p class="Value">[% Data.Contracted | html %]</p>
+                        <div class="Clear"></div>
+                    </fieldset>
+                </div>
+            </div>

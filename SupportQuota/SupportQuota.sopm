@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <otrs_package version="1.0">
     <Name>SupportQuota</Name>
-    <Version>1.0.4</Version>
-    <Framework>4.0.x</Framework>
+    <Version>2.0.0</Version>
+    <Framework>5.0.x</Framework>
     <Vendor>Deny Dias</Vendor>
-    <URL>http://mexapi.macpress.com.br/foss.html</URL>
+    <URL>https://mexapi.macpress.com.br/foss.html</URL>
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
+    <Description Lang="en">Add support to work unit quotas by customer company and displays the quotas in the agent interface.</Description>
+    <Description Lang="fr">Ajoute la possibilité de gérer des crédits temps de support par client et d'afficher ces informations dans l'interface des agents.</Description>
+    <Description Lang="pt_BR">Adiciona suporte a cotas de unidades de trabalho por empresa cliente e mostra as cotas na interface do agente.</Description>
     <ChangeLog Version="0.0.1" Date="2014-07-12 19:09:21">Initial release.</ChangeLog>
     <ChangeLog Version="0.0.2" Date="2014-07-14 00:49:21">Use Perl bind paramenters on SQL queries. Implement translations. Brazilian Portuguese and German translations.</ChangeLog>
     <ChangeLog Version="0.0.3" Date="2014-07-14 20:12:21">Rename module file. Remove some unnecessary files.</ChangeLog>
@@ -17,29 +20,26 @@
     <ChangeLog Version="1.0.2" Date="2015-02-25 09:03:53">Sanitize undefined quotas to avoid log errors.</ChangeLog>
     <ChangeLog Version="1.0.3" Date="2015-07-31 23:04:39">Fix a PostgreSQL error condition.</ChangeLog>
     <ChangeLog Version="1.0.4" Date="2015-12-04 04:09:24">Changes query logic to properly deal with quota reset for period recurrences.</ChangeLog>
-    <Description Lang="en">Add support to work unit quotas by customer company and displays the quotas in the agent interface.</Description>
-    <Description Lang="fr">Ajoute la possibilité de gérer des crédits temps de support par client et d'afficher ces informations dans l'interface des agents.</Description>
-    <Description Lang="pt_BR">Adiciona suporte a cotas de unidades de trabalho por empresa cliente e mostra as cotas na interface do agente.</Description>
-    <IntroInstall Type="post" Lang="en" Title="Thank you!">Don't forget to edit your Kernel/Config.pm to add the 'Quota' field to 'AdminCustomerCompany'. See the module README.md for a Kernel/Config.pm example. Thank you for install the Support Quota module.</IntroInstall>
-    <IntroInstall Type="post" Lang="fr" Title="Merci!">N'oubliez pas d'éditer le fichier Kernel/Config.pm pour ajouter la colonne 'Quota' dans la table 'AdminCustomerCompany'. Reportez vous au fichier README.md pour un exemple. Merci d'avoir installé le module "Support Quota".</IntroInstall>
-    <IntroInstall Type="post" Lang="pt_BR" Title="Obrigado!">Não deixe de alterar o seu Kernel/Config.pm para incluir o campo 'Cota' em 'AdminCustomerCompany'. Veja o README.md do módulo para um exemplo. Obrigado por instalar o módulo Cota de Suporte.</IntroInstall>
-    <BuildDate>2015-12-04 04:09:24</BuildDate>
-    <BuildHost>devlab</BuildHost>
+    <ChangeLog Version="2.0.0" Date="2015-12-06 21:32:32">Migration to OTRS5 framework.</ChangeLog>
     <Filelist>
         <File Permission="644" Location="Kernel/Config/Files/SupportQuota.xml"></File>
         <File Permission="644" Location="Kernel/Language/de_SupportQuota.pm"></File>
         <File Permission="644" Location="Kernel/Language/pt_BR_SupportQuota.pm"></File>
         <File Permission="644" Location="Kernel/Language/fr_SupportQuota.pm"></File>
-        <File Permission="644" Location="Kernel/Output/HTML/SupportQuota.pm"></File>
+        <File Permission="644" Location="Kernel/Output/HTML/OutputFilter/SupportQuota.pm"></File>
+        <File Permission="644" Location="Kernel/Output/HTML/Templates/Standard/SupportQuotaAgent.tt"></File>
     </Filelist>
+    <IntroInstall Type="post" Lang="en" Title="Thank you!">Don't forget to edit your Kernel/Config.pm to add the 'Quota' field to 'AdminCustomerCompany'. See the module README.md for a Kernel/Config.pm example. Thank you for install the Support Quota module.</IntroInstall>
+    <IntroInstall Type="post" Lang="fr" Title="Merci!">N'oubliez pas d'éditer le fichier Kernel/Config.pm pour ajouter la colonne 'Quota' dans la table 'AdminCustomerCompany'. Reportez vous au fichier README.md pour un exemple. Merci d'avoir installé le module "Support Quota".</IntroInstall>
+    <IntroInstall Type="post" Lang="pt_BR" Title="Obrigado!">Não deixe de alterar o seu Kernel/Config.pm para incluir o campo 'Cota' em 'AdminCustomerCompany'. Veja o README.md do módulo para um exemplo. Obrigado por instalar o módulo Cota de Suporte.</IntroInstall>
     <DatabaseInstall Type="pre">
         <TableAlter Name="customer_company">
-            <ColumnAdd Name="quota" Type="smallint"/>
+            <ColumnAdd Name="squota" Type="SMALLINT"/>
         </TableAlter>
     </DatabaseInstall>
     <DatabaseUninstall>
         <TableAlter Name="customer_company">
-            <ColumnDrop Name="quota"/>
+            <ColumnDrop Name="squota"/>
         </TableAlter>
     </DatabaseUninstall>
 </otrs_package>
