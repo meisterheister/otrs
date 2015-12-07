@@ -69,6 +69,8 @@ Then reload UI and configure Fred at will. To uninstall it, just unlink the modu
 
 ### Lint
 
+Use [OTRS code quality checker ](https://github.com/OTRS/otrscodepolicy) to verify a module code.
+
 ```
 cd /opt/otrs/dev/
 git clone https://github.com/OTRS/otrscodepolicy
@@ -95,11 +97,10 @@ This seems to be a module not copyrighted by OTRS AG. File copyright will not be
 [checked] doc/en/SupportQuota.pod
 ```
 
-### Package/Repository Building
+### Build Package/Repository
 
 ```
-/opt/otrs/bin/otrs.PackageManager.pl -a build -p /opt/otrs/dev/SupportQuota/SupportQuota.sopm
+su otrs -c "/opt/otrs/bin/otrs.Console.pl Dev::Package::Build /opt/otrs/dev/ModuleRootDir/ModuleName.sopm /opt/otrs/dev/packages"
 rm /opt/otrs/dev/packages/SupportQuota-*.opm
-mv /tmp/SupportQuota-*.opm /opt/otrs/dev/packages/
-/opt/otrs/bin/otrs.PackageManager.pl -a index -d /opt/otrs/dev/packages > /opt/otrs/dev/packages/otrs.xml
+su otrs -c "/opt/otrs/bin/otrs.Console.pl Dev::Package::RepositoryIndex /opt/otrs/dev/packages > /opt/otrs/dev/packages/otrs.xml"
 ```
