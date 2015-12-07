@@ -88,7 +88,7 @@ This seems to be a module not copyrighted by OTRS AG. File copyright will not be
 [checked] Kernel/Language/de_SupportQuota.pm
 [checked] Kernel/Language/fr_SupportQuota.pm
 [checked] Kernel/Language/pt_BR_SupportQuota.pm
-[tidied]  Kernel/Output/HTML/OutputFilter/SupportQuota.pm
+[checked] Kernel/Output/HTML/OutputFilter/SupportQuota.pm
 [checked] Kernel/Output/HTML/Templates/Standard/SupportQuotaAgent.tt
 [checked] LICENSE.txt
 [checked] README.md
@@ -100,7 +100,7 @@ This seems to be a module not copyrighted by OTRS AG. File copyright will not be
 ### Build Package/Repository
 
 ```
+rm /opt/otrs/dev/packages/ModuleName*.opm
 su otrs -c "/opt/otrs/bin/otrs.Console.pl Dev::Package::Build /opt/otrs/dev/ModuleRootDir/ModuleName.sopm /opt/otrs/dev/packages"
-rm /opt/otrs/dev/packages/SupportQuota-*.opm
 su otrs -c "/opt/otrs/bin/otrs.Console.pl Dev::Package::RepositoryIndex /opt/otrs/dev/packages > /opt/otrs/dev/packages/otrs.xml"
 ```
