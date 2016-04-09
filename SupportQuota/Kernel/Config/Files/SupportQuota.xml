@@ -21,9 +21,9 @@
         <SubGroup>SupportQuota::Preferences</SubGroup>
         <Setting>
             <Option SelectedID="month">
-                <Item Key="month">Monthly</Item>
-                <Item Key="year">Yearly</Item>
-                <Item Key="never">Disabled</Item>
+                <Item Key="month" Translatable="1">Monthly</Item>
+                <Item Key="year" Translatable="1">Yearly</Item>
+                <Item Key="never" Translatable="1">Disabled</Item>
             </Option>
         </Setting>
     </ConfigItem>
@@ -33,8 +33,8 @@
         <SubGroup>SupportQuota::Preferences</SubGroup>
         <Setting>
             <Option SelectedID="0">
-                <Item Key="0">No</Item>
-                <Item Key="1">Yes</Item>
+                <Item Key="0" Translatable="1">No</Item>
+                <Item Key="1" Translatable="1">Yes</Item>
             </Option>
         </Setting>
     </ConfigItem>
@@ -44,8 +44,8 @@
         <SubGroup>SupportQuota::Preferences</SubGroup>
         <Setting>
             <Option SelectedID="bottom">
-                <Item Key="top">Top</Item>
-                <Item Key="bottom">Bottom</Item>
+                <Item Key="top" Translatable="1">Top</Item>
+                <Item Key="bottom" Translatable="1">Bottom</Item>
             </Option>
         </Setting>
     </ConfigItem>

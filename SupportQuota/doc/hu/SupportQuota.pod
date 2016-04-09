@@ -1,0 +1,38 @@
+=encoding utf-8
+
+=head1 NÉV
+
+Kvótatámogatás kiegészítő - az ügyfél munkaegység kvótáinak szabályozása
+
+=head1 LEÍRÁS
+
+Ez az OTRS kiegészítő modul egyszerűen használható felületet biztosít az ügyféllel szerződött 
+munkaegység kvóták szabályozásához.
+
+Egy kvóta beírásával az OTRS rendszeren lévő minden egyes ügyfél-vállalatnál, valamint ügyelve 
+a megfelelő „CustomerCompanyID” beállítására a jegyeknél (egyszerű, ha levelezési levélszűrőket 
+használ), ez a kiegészítő képes egy bizonyos ügyfélhez elérhető összes munkaegység kvóta 
+lekérésére, mennyi munkaegységet használtak el az aktuális időszakban, és mennyi munkaegység 
+érhető el annál az ügyfélnél ugyanabban az időszakban. Az időszak lehet az aktuális hónap vagy 
+év. Ha az elérhető kvóta negatív, akkor az további pénzbe fog kerülni az időszak végén.
+
+A fenti információk ezután egy felületi elemen jelennek meg az ügyintéző jegynagyítás felülete 
+alatt, így az ügyintézők könnyen el tudják dönteni, hogy mit kell tenniük a folyamat alapján, 
+hogyan számítsanak fel díjat (vagy ne) a kvótát túllépő ügyfeleknek.
+
+A teljes leírásért, a telepítési és beállítási utasításokért, továbbá néhány hasznos megjegyzésért 
+olvassa el a L<README.md|https://github.com/denydias/otrs/tree/master/SupportQuota#otrs-support-quota-add-on> 
+fájlt a forráskód tárolójában.
+
+=head1 SZERZŐ ÉS LICENC
+
+Copyright (C) 2014-2016 Deny Dias, L<https://mexapi.macpress.com.br/foss>
+
+Ez a modul az AGPL 3 szerint licencelt.
+
+=head1 MAGYAR FORDÍTÁS
+
+A magyar fordítást az OTRS-megoldások csapata készítette.
+Copyright (C) 2016 Úr Balázs, L<http://otrs-megoldasok.hu>
+
+=cut
