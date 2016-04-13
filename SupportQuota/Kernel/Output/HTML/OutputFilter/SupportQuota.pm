@@ -11,6 +11,8 @@ package Kernel::Output::HTML::OutputFilter::SupportQuota;
 use strict;
 use warnings;
 
+use Kernel::Language qw(Translatable);
+
 our @ObjectDependencies = (
     'Kernel::Config',
     'Kernel::System::DB',
@@ -60,13 +62,13 @@ sub Run {
     my $RecurrenceLabel = "";
     my $SqlRecurrence   = "";
     if ( $Recurrence eq 'month' ) {
-        $RecurrenceLabel = "(Monthly)";
+        $RecurrenceLabel = Translatable('(Monthly)');
         $SqlRecurrence   = "
                 AND EXTRACT(YEAR FROM ta.create_time) = EXTRACT(YEAR FROM NOW())
                 AND EXTRACT(MONTH FROM ta.create_time) = EXTRACT(MONTH FROM NOW())";
     }
     elsif ( $Recurrence eq 'year' ) {
-        $RecurrenceLabel = "(Yearly)";
+        $RecurrenceLabel = Translatable('(Yearly)');
         $SqlRecurrence   = "
                 AND EXTRACT(YEAR FROM ta.create_time) = EXTRACT(YEAR FROM NOW())";
     }
