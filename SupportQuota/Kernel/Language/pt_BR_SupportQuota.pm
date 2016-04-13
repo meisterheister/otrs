@@ -20,17 +20,17 @@ sub Data {
     my $Lang = $Self->{Translation};
 
     # Kernel/Config/Files/SupportQuota.xml
-    $Lang->{'Shows the customer support quota widget in the ticket zoom view.'} = '';
-    $Lang->{'Quota recurrence period.'} = '';
+    $Lang->{'Shows the customer support quota widget in the ticket zoom view.'} = 'Mostra ao agente o widget Cota de Suporte do Cliente nos detalhes do chamado.';
+    $Lang->{'Quota recurrence period.'} = 'Período de recorrência da cota.';
     $Lang->{'Monthly'} = 'Mensal';
     $Lang->{'Yearly'} = 'Anual';
-    $Lang->{'Disabled'} = '';
-    $Lang->{'Display Customer Support Quota widget even if no quota is set to a customer.'} = '';
-    $Lang->{'No'} = '';
-    $Lang->{'Yes'} = '';
-    $Lang->{'Placement of Support Quota widget in TicketZoom sidebar.'} = '';
-    $Lang->{'Top'} = '';
-    $Lang->{'Bottom'} = '';
+    $Lang->{'Disabled'} = 'Sem recorrência';
+    $Lang->{'Display Customer Support Quota widget even if no quota is set to a customer.'} = 'Mostrar o widget Cota de Suporte do Cliente mesmo se não houver uma cota estipulada ao cliente.';
+    $Lang->{'No'} = 'Não';
+    $Lang->{'Yes'} = 'Sim';
+    $Lang->{'Placement of Support Quota widget in TicketZoom sidebar.'} = 'Posição do widget na barra lateral dos detalhes do chamado.';
+    $Lang->{'Top'} = 'Em cima';
+    $Lang->{'Bottom'} = 'Embaixo';
 
     # Kernel/Output/HTML/Templates/Standard/SupportQuotaAgent.tt
     $Lang->{'Customer Support Quota'} = 'Cota de Suporte do Cliente';
@@ -43,7 +43,7 @@ sub Data {
     $Lang->{'(Yearly)'} = '(Anual)';
 
     # Kernel/config.pm (added manually after installation)
-    $Lang->{'Quota'} = '';
+    $Lang->{'Quota'} = 'Cota';
 }
 
 1;
