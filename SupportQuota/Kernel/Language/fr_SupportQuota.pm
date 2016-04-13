@@ -26,8 +26,8 @@ sub Data {
     $Lang->{'Yearly'} = 'Annuel';
     $Lang->{'Disabled'} = '';
     $Lang->{'Display Customer Support Quota widget even if no quota is set to a customer.'} = '';
-    $Lang->{'No'} = '';
-    $Lang->{'Yes'} = '';
+    $Lang->{'No'} = 'Non';
+    $Lang->{'Yes'} = 'Oui';
     $Lang->{'Placement of Support Quota widget in TicketZoom sidebar.'} = '';
     $Lang->{'Top'} = '';
     $Lang->{'Bottom'} = '';
