@@ -202,5 +202,6 @@ With kind contributions by:
 * [@reneeb](https://github.com/reneeb)
 * [@lermit](https://github.com/lermit)
 * [@maulkin](https://github.com/maulkin)
+* [@urbalazs](https://github.com/urbalazs)
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see the enclosed file COPYING for license information (AGPL). If you did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
