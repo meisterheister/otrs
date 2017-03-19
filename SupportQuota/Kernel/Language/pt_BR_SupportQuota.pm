@@ -1,5 +1,6 @@
 # --
 # Copyright (C) 2014-2016 Deny Dias, https://mexapi.macpress.com.br/foss
+# Copyright (C) 2017 Edicarlos Lopes, edicarlos.lds@gmail.com
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
@@ -21,6 +22,7 @@ sub Data {
 
     # Kernel/Config/Files/SupportQuota.xml
     $Lang->{'Shows the customer support quota widget in the ticket zoom view.'} = 'Mostra ao agente o widget Cota de Suporte do Cliente nos detalhes do chamado.';
+    $Lang->{'Shows the customer the quota remaining in the customer interface.'} = 'Mostra ao cliente a quota restante na interface do cliente.';
     $Lang->{'Quota recurrence period.'} = 'Período de recorrência da cota.';
     $Lang->{'Monthly'} = 'Mensal';
     $Lang->{'Yearly'} = 'Anual';
@@ -44,6 +46,9 @@ sub Data {
 
     # Kernel/config.pm (added manually after installation)
     $Lang->{'Quota'} = 'Cota';
+	
+	# Kernel/Output/HTML/Templates/Standard/SupportQuotaCustomer.tt
+	$Lang->{'Available Quota'} = 'Cota Disponível';
 }
 
 1;
