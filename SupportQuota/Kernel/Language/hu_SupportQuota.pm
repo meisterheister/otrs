@@ -1,5 +1,5 @@
 # --
-# Copyright (C) 2014-2016 Deny Dias, https://mexapi.macpress.com.br/foss
+# Copyright (C) 2014-2017 Deny Dias, https://mexapi.macpress.com.br/about
 # Copyright (C) 2016 Balázs Úr, http://www.otrs-megoldasok.hu
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see

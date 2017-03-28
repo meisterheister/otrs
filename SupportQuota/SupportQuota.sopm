@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <otrs_package version="1.0">
     <Name>SupportQuota</Name>
-    <Version>2.1.1</Version>
+    <Version>0.0.0</Version>
     <Framework>5.0.x</Framework>
     <Vendor>Deny Dias</Vendor>
-    <URL>https://mexapi.macpress.com.br/foss.html</URL>
+    <URL>https://mexapi.macpress.com.br/about</URL>
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
     <Description Lang="en">Add support to work unit quotas by customer company and displays the quotas in the agent interface.</Description>
     <Description Lang="fr">Ajoute la possibilité de gérer des crédits temps de support par client et d'afficher ces informations dans l'interface des agents.</Description>
@@ -23,19 +23,19 @@
     <ChangeLog Version="1.0.4" Date="2015-12-04 04:09:24">Changes query logic to properly deal with quota reset for period recurrences.</ChangeLog>
     <ChangeLog Version="2.0.0" Date="2015-12-06 21:32:32">Update to Framework v5. For Framework v4 support, get SupportQuota v1.0.4.</ChangeLog>
     <ChangeLog Version="2.0.1" Date="2016-04-13 02:23:11">More translatable strings and add Hungarian translation, thanks to Balázs Úr.</ChangeLog>
-	<ChangeLog Version="2.1.1" Date="2017-03-18 19:50:00">Added widget to show the quota available in the customer interface.</ChangeLog>
+    <ChangeLog Version="2.1.0" Date="2017-03-28 18:52:43">Add available quota widget to the customer interface.</ChangeLog>
     <Filelist>
-        <File Permission="644" Location="doc/en/SupportQuota.pod"></File>
-        <File Permission="644" Location="doc/hu/SupportQuota.pod"></File>
-        <File Permission="644" Location="Kernel/Config/Files/SupportQuota.xml"></File>
-        <File Permission="644" Location="Kernel/Language/de_SupportQuota.pm"></File>
-        <File Permission="644" Location="Kernel/Language/hu_SupportQuota.pm"></File>
-        <File Permission="644" Location="Kernel/Language/pt_BR_SupportQuota.pm"></File>
-        <File Permission="644" Location="Kernel/Language/fr_SupportQuota.pm"></File>
-        <File Permission="644" Location="Kernel/Output/HTML/OutputFilter/SupportQuota.pm"></File>
-        <File Permission="644" Location="Kernel/Output/HTML/OutputFilter/SupportQuotaCustomer.pm"></File>
-        <File Permission="644" Location="Kernel/Output/HTML/Templates/Standard/SupportQuotaAgent.tt"></File>
-        <File Permission="644" Location="Kernel/Output/HTML/Templates/Standard/SupportQuotaCustomer.tt"></File>
+        <File Permission="644" Location="doc/en/SupportQuota.pod" />
+        <File Permission="644" Location="doc/hu/SupportQuota.pod" />
+        <File Permission="644" Location="Kernel/Config/Files/SupportQuota.xml" />
+        <File Permission="644" Location="Kernel/Language/de_SupportQuota.pm" />
+        <File Permission="644" Location="Kernel/Language/hu_SupportQuota.pm" />
+        <File Permission="644" Location="Kernel/Language/pt_BR_SupportQuota.pm" />
+        <File Permission="644" Location="Kernel/Language/fr_SupportQuota.pm" />
+        <File Permission="644" Location="Kernel/Output/HTML/OutputFilter/SupportQuota.pm" />
+        <File Permission="644" Location="Kernel/Output/HTML/OutputFilter/SupportQuotaCustomer.pm" />
+        <File Permission="644" Location="Kernel/Output/HTML/Templates/Standard/SupportQuotaAgent.tt" />
+        <File Permission="644" Location="Kernel/Output/HTML/Templates/Standard/SupportQuotaCustomer.tt" />
     </Filelist>
     <IntroInstall Type="post" Lang="en" Title="Thank you!">Don't forget to edit your Kernel/Config.pm to add the 'Quota' field to 'AdminCustomerCompany'. See the module README.md for a Kernel/Config.pm example. Thank you for install the Support Quota module.</IntroInstall>
     <IntroInstall Type="post" Lang="fr" Title="Merci!">N'oubliez pas d'éditer le fichier Kernel/Config.pm pour ajouter la colonne 'Quota' dans la table 'AdminCustomerCompany'. Reportez vous au fichier README.md pour un exemple. Merci d'avoir installé le module "Support Quota".</IntroInstall>
@@ -43,12 +43,12 @@
     <IntroInstall Type="post" Lang="pt_BR" Title="Obrigado!">Não deixe de alterar o seu Kernel/Config.pm para incluir o campo 'Cota' em 'AdminCustomerCompany'. Veja o README.md do módulo para um exemplo. Obrigado por instalar o módulo Cota de Suporte.</IntroInstall>
     <DatabaseInstall Type="pre">
         <TableAlter Name="customer_company">
-            <ColumnAdd Name="cquota" Type="SMALLINT"/>
+            <ColumnAdd Name="cquota" Type="SMALLINT" />
         </TableAlter>
     </DatabaseInstall>
     <DatabaseUninstall>
         <TableAlter Name="customer_company">
-            <ColumnDrop Name="cquota"/>
+            <ColumnDrop Name="cquota" />
         </TableAlter>
     </DatabaseUninstall>
 </otrs_package>

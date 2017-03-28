@@ -26,7 +26,7 @@ fájlt a forráskód tárolójában.
 
 =head1 SZERZŐ ÉS LICENC
 
-Copyright (C) 2014-2016 Deny Dias, L<https://mexapi.macpress.com.br/foss>
+Copyright (C) 2014-2017 Deny Dias, L<https://mexapi.macpress.com.br/about>
 
 Ez a modul az AGPL 3 szerint licencelt.
 

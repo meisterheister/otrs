@@ -4,11 +4,17 @@ This OTRS Add-on module provides an easy to use interface to control customer co
 
 By entering a quota to each Customer Company in your OTRS system and taking care to set the proper 'CustomerCompanyID' on your tickets (easy if you use PostMaster Filters), this add-on is able to get the total work unit quota available to a particular customer, how many work units were used in the current period and how many work units are available to that customer in the same period. Periods can be the current month or year. If the available quota is negative, there will be extra bucks in the end of the period.
 
-The above information then appears in a widget under AgentTicketZoom interface so agents can easily decide what to do based on your process on how to charge (or not) for beyond quota customers.
+The above information then appears in a widget under both AgentTicketZoom and overall Customer interfaces. That way agents can easily decide how to charge (or not) for beyond quota customers, while customers can keep track of their support quota usage.
 
-The screenshot bellow shows how the Support Quota works in the agent GUI:
+## Screenshots
 
-![Support Quota Add-on in action](https://raw.githubusercontent.com/denydias/otrs/master/SupportQuota/SupportQuota.png)
+The screenshot bellow shows how the Support Quota works in the AgentTicketZoom:
+
+![Support Quota Add-on in action: AgentTicketZoom](https://raw.githubusercontent.com/denydias/otrs/master/SupportQuota/SupportQuota_Agent.png)
+
+The screenshot bellow shows how the Support Quota works in the Customer interface:
+
+![Support Quota Add-on in action: customer.pl](https://raw.githubusercontent.com/denydias/otrs/master/SupportQuota/SupportQuota_Customer.png)
 
 ## OTRS Framework Version Requirements
 
@@ -195,7 +201,7 @@ I'd like to acknowledge and thanks all the above list.
 
 ## License
 
-Copyright (C) 2014-2016 Deny Dias, https://mexapi.macpress.com.br/foss
+Copyright (C) 2014-2017 Deny Dias, https://mexapi.macpress.com.br/about
 
 With kind contributions by:
 

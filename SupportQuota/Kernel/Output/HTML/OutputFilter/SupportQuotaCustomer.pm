@@ -1,5 +1,4 @@
 # --
-# Copyright (C) 2014-2016 Deny Dias, https://mexapi.macpress.com.br/foss
 # Copyright (C) 2017 Edicarlos Lopes, edicarlos.lds@gmail.com
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
@@ -37,7 +36,7 @@ sub Run {
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
-	
+
     # get template name
     my $Templatename = $Param{TemplateFile} || '';
 
@@ -85,7 +84,7 @@ sub Run {
     # return if result set is empty
     return if !$DBObject->Prepare(
         SQL   => $SQL,
-		Bind  => [ \$Self->{CustomerID} ],
+        Bind  => [ \$Self->{CustomerID} ],
         Limit => 1,
     );
 
@@ -120,30 +119,30 @@ sub Run {
     {
         return;
     }
-	
-	# set text color 
-	my $CSSColor;
-	if( $AvailableQuota <= 0 ){
-		$CSSColor = '#ff505e';
-	}
-	else{
-		$CSSColor = '#6a6a6a';
-	}
+
+    # set text color
+    my $CSSColor;
+    if ( $AvailableQuota <= 0 ) {
+        $CSSColor = '#ff505e';
+    }
+    else {
+        $CSSColor = '#6a6a6a';
+    }
 
     # set template and information values
     my $Snippet = $LayoutObject->Output(
         TemplateFile => 'SupportQuotaCustomer',
         Data         => {
-			Color		=> $CSSColor,
-            Available  	=> $AvailableQuota,
-            Used       	=> $UsedQuota,
-            Contracted 	=> $ContractQuota,
-            Recurrence 	=> $RecurrenceLabel
-        }
+            Color      => $CSSColor,
+            Available  => $AvailableQuota,
+            Used       => $UsedQuota,
+            Contracted => $ContractQuota,
+            Recurrence => $RecurrenceLabel
+            }
     );
 
     # add information to customer
-    ${ $Param{Data} } =~ s{(<div \s+ id="Header">)}{$1 $Snippet}xsm;    
+    ${ $Param{Data} } =~ s{(<div \s+ id="Header">)}{$1 $Snippet}xsm;
 
     # done, return information
     return ${ $Param{Data} };

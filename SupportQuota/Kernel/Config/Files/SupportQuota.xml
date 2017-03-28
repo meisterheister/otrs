@@ -15,7 +15,7 @@
             </Hash>
         </Setting>
     </ConfigItem>
-	<ConfigItem Name="Frontend::Output::FilterElementPost###SupportQuotaCustomer" Required="0" Valid="1">
+    <ConfigItem Name="Frontend::Output::FilterElementPost###SupportQuotaCustomer" Required="0" Valid="1">
         <Description Translatable="1">Shows the customer support quota widget in the customer interface.</Description>
         <Group>Ticket</Group>
         <SubGroup>Frontend::Customer::Ticket::Overview</SubGroup>

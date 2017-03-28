@@ -3,7 +3,7 @@
     <Name>SupportQuota</Name>
     <Version>2.0.1</Version>
     <Vendor>Deny Dias</Vendor>
-    <URL>https://mexapi.macpress.com.br/foss.html</URL>
+    <URL>https://mexapi.macpress.com.br/about</URL>
     <License>GNU AFFERO GENERAL PUBLIC LICENSE Version 3, November 2007</License>
     <ChangeLog Date="2014-07-12 19:09:21" Version="0.0.1">Initial release.</ChangeLog>
     <ChangeLog Date="2014-07-14 00:49:21" Version="0.0.2">Use Perl bind paramenters on SQL queries. Implement translations. Brazilian Portuguese and German translations.</ChangeLog>
