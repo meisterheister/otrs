@@ -1,12 +1,12 @@
 # --
-# Copyright (C) 2014-2017 Deny Dias, https://mexapi.macpress.com.br/about
+# Copyright (C) 2017 Edicarlos Lopes, edicarlos.lds@gmail.com
 # --
 # This software comes with ABSOLUTELY NO WARRANTY. For details, see
 # the enclosed file COPYING for license information (AGPL). If you
 # did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
 # --
 
-package Kernel::Output::HTML::OutputFilter::SupportQuota;
+package Kernel::Output::HTML::OutputFilter::SupportQuotaCustomer;
 
 use strict;
 use warnings;
@@ -16,8 +16,7 @@ use Kernel::Language qw(Translatable);
 our @ObjectDependencies = (
     'Kernel::Config',
     'Kernel::System::DB',
-    'Kernel::Output::HTML::Layout',
-    'Kernel::System::Web::Request'
+    'Kernel::Output::HTML::Layout'
 );
 
 sub new {
@@ -37,7 +36,6 @@ sub Run {
     my $ConfigObject = $Kernel::OM->Get('Kernel::Config');
     my $DBObject     = $Kernel::OM->Get('Kernel::System::DB');
     my $LayoutObject = $Kernel::OM->Get('Kernel::Output::HTML::Layout');
-    my $ParamObject  = $Kernel::OM->Get('Kernel::System::Web::Request');
 
     # get template name
     my $Templatename = $Param{TemplateFile} || '';
@@ -45,14 +43,8 @@ sub Run {
     # return if template is empty
     return 1 if !$Templatename;
 
-    # return if not in AgentTicketZoom
-    return 1 if $Templatename ne 'AgentTicketZoom';
-
-    # get the TicketID
-    $Self->{TicketID} = $ParamObject->GetParam( Param => 'TicketID' );
-
-    # return if TicketID is empty
-    return if !$Self->{TicketID};
+    # return if not in CustomerHeader
+    return 1 if $Templatename ne 'CustomerHeader';
 
     # get data
     my %Data = ();
@@ -86,13 +78,13 @@ sub Run {
         LEFT OUTER JOIN time_accounting ta
                 ON ta.ticket_id = t.id
                 ${SqlRecurrence}
-        WHERE   cc.customer_id = (SELECT customer_id FROM ticket WHERE id = ?)
+        WHERE   cc.customer_id = ?
         GROUP   BY cc.customer_id";
 
     # return if result set is empty
     return if !$DBObject->Prepare(
         SQL   => $SQL,
-        Bind  => [ \$Self->{TicketID} ],
+        Bind  => [ \$Self->{CustomerID} ],
         Limit => 1,
     );
 
@@ -128,31 +120,29 @@ sub Run {
         return;
     }
 
-    # information for AgentTicketZoom
-    if ( $Templatename eq 'AgentTicketZoom' ) {
-
-        # set template and information values
-        my $Snippet = $LayoutObject->Output(
-            TemplateFile => 'SupportQuotaAgent',
-            Data         => {
-                Available  => $AvailableQuota,
-                Used       => $UsedQuota,
-                Contracted => $ContractQuota,
-                Recurrence => $RecurrenceLabel
-                }
-        );
-
-        # get the position for the output, default to bottom
-        my $Position = $ConfigObject->Get('SupportQuota::Preferences::Position') || 'bottom';
-
-        # add information according to the requested position
-        if ( $Position eq 'top' ) {
-            ${ $Param{Data} } =~ s{(<div \s+ class="SidebarColumn">)}{$1 $Snippet}xsm;
-        }
-        else {
-            ${ $Param{Data} } =~ s{(</div> \s+ <div \s+ class="ContentColumn)}{ $Snippet $1 }xms;
-        }
+    # set text color
+    my $CSSColor;
+    if ( $AvailableQuota <= 0 ) {
+        $CSSColor = '#ff505e';
     }
+    else {
+        $CSSColor = '#6a6a6a';
+    }
+
+    # set template and information values
+    my $Snippet = $LayoutObject->Output(
+        TemplateFile => 'SupportQuotaCustomer',
+        Data         => {
+            Color      => $CSSColor,
+            Available  => $AvailableQuota,
+            Used       => $UsedQuota,
+            Contracted => $ContractQuota,
+            Recurrence => $RecurrenceLabel
+            }
+    );
+
+    # add information to customer
+    ${ $Param{Data} } =~ s{(<div \s+ id="Header">)}{$1 $Snippet}xsm;
 
     # done, return information
     return ${ $Param{Data} };

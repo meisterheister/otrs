@@ -4,11 +4,17 @@ This OTRS Add-on module provides an easy to use interface to control customer co
 
 By entering a quota to each Customer Company in your OTRS system and taking care to set the proper 'CustomerCompanyID' on your tickets (easy if you use PostMaster Filters), this add-on is able to get the total work unit quota available to a particular customer, how many work units were used in the current period and how many work units are available to that customer in the same period. Periods can be the current month or year. If the available quota is negative, there will be extra bucks in the end of the period.
 
-The above information then appears in a widget under AgentTicketZoom interface so agents can easily decide what to do based on your process on how to charge (or not) for beyond quota customers.
+The above information then appears in a widget under both AgentTicketZoom and overall Customer interfaces. That way agents can easily decide how to charge (or not) for beyond quota customers, while customers can keep track of their support quota usage.
 
-The screenshot bellow shows how the Support Quota works in the agent GUI:
+## Screenshots
 
-![Support Quota Add-on in action](https://raw.githubusercontent.com/denydias/otrs/master/SupportQuota/SupportQuota.png)
+The screenshot bellow shows how the Support Quota works in the AgentTicketZoom:
+
+![Support Quota Add-on in action: AgentTicketZoom](https://raw.githubusercontent.com/denydias/otrs/master/SupportQuota/SupportQuota_Agent.png)
+
+The screenshot bellow shows how the Support Quota works in the Customer interface:
+
+![Support Quota Add-on in action: customer.pl](https://raw.githubusercontent.com/denydias/otrs/master/SupportQuota/SupportQuota_Customer.png)
 
 ## OTRS Framework Version Requirements
 
@@ -153,7 +159,6 @@ As an start point, I'll give you the following items as a 'To Do List':
 
 - [x] Properly implement the OTRS template mechanism. (done by [@reneeb](https://github.com/reneeb) in [6c35790b23](https://github.com/denydias/otrs/commit/6c35790b230104b2124fb2b8a61f63feba4b56bf))
 - [x] Add localization support (Brazilian Portuguese is hardcoded). If you need the strings that need translation, open an issue and I'll be more than pleased to provide them. (done by [@reneeb](https://github.com/reneeb) in [6c35790b23](https://github.com/denydias/otrs/commit/6c35790b230104b2124fb2b8a61f63feba4b56bf))
-- [ ] Add the widget to AgentCustomerInformationCenter.
 - [ ] Add visual cues to over quota customers.
 - [ ] Provide notification methods to automatically reply to customers working beyond the contracted quota upon new tickets.
 
@@ -170,6 +175,10 @@ At http://forums.otterhub.org/viewtopic.php?f=64&t=25727&p=102624#p102527.
 - [X] All the information can be gathered in one single SQL statement with some outer joins. (**Note:** I managed to get all data with one ANSI SQL statement (well, not exactly as there is a subquery). The new SQL should now be portable between DBMS supported by OTRS, but it was tested only in MySQL and MariaDB. I do not have access to PostgreSQL, Oracle or MSSQL to proceed with further tests. I appreciate if someone out there could validate the new SQL on these.)
 - [X] Check if a TicketID is set (someone might use the output filter for an action that doesn't have a TicketID and that would lead to an error) and return if no ID is set.
 - [X] `year()` and `month()` are not portable. (**Note:** Please see the SQL comment above.)
+
+#### edicarloslds
+
+- [X] Add the widget to AgentCustomerInformationCenter. The contribution (PR #13) is even more complete, providing an elegant widget overall Customer interface.
 
 ## References
 
@@ -195,7 +204,7 @@ I'd like to acknowledge and thanks all the above list.
 
 ## License
 
-Copyright (C) 2014-2016 Deny Dias, https://mexapi.macpress.com.br/foss
+Copyright (C) 2014-2017 Deny Dias, https://mexapi.macpress.com.br/about
 
 With kind contributions by:
 
@@ -203,5 +212,6 @@ With kind contributions by:
 * [@lermit](https://github.com/lermit)
 * [@maulkin](https://github.com/maulkin)
 * [@urbalazs](https://github.com/urbalazs)
+* [@edicarloslds](https://github.com/edicarloslds)
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see the enclosed file COPYING for license information (AGPL). If you did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
