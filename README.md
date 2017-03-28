@@ -101,6 +101,7 @@ This seems to be a module not copyrighted by OTRS AG. File copyright will not be
 
 ```
 rm /opt/otrs/dev/packages/ModuleName*.opm
-su otrs -c "/opt/otrs/bin/otrs.Console.pl Dev::Package::Build /opt/otrs/dev/ModuleRootDir/ModuleName.sopm /opt/otrs/dev/packages"
-su otrs -c "/opt/otrs/bin/otrs.Console.pl Dev::Package::RepositoryIndex /opt/otrs/dev/packages > /opt/otrs/dev/packages/otrs.xml"
+su otrs -c "/opt/otrs/bin/otrs.Console.pl Dev::Package::Build /opt/otrs/dev/ModuleRootDir/ModuleName.sopm /tmp"
+su otrs -c "/opt/otrs/bin/otrs.Console.pl Dev::Package::RepositoryIndex /opt/otrs/dev/packages > /tmp/otrs.xml"
+mv /tmp/ModuleName-x.x.x.opm /tmp/otrs.xml /opt/otrs/dev/packages
 ```
