@@ -21,6 +21,7 @@ The screenshot bellow shows how the Support Quota works in the Customer interfac
 - **Support Quota 0.x Series:** compatible with OTRS 3.3.x only.
 - **Support Quota 1.x Series:** compatible with OTRS 4.x only.
 - **Support Quota 2.x Series:** compatible with OTRS 5.x only.
+- **Support Quota 3.x Series:** compatible with OTRS 6.x only.
 
 ## Instalation
 
@@ -213,5 +214,6 @@ With kind contributions by:
 * [@maulkin](https://github.com/maulkin)
 * [@urbalazs](https://github.com/urbalazs)
 * [@edicarloslds](https://github.com/edicarloslds)
+* [@meisterheister](https://github.com/meisterheister)
 
 This software comes with ABSOLUTELY NO WARRANTY. For details, see the enclosed file COPYING for license information (AGPL). If you did not receive this file, see http://www.gnu.org/licenses/agpl.txt.
