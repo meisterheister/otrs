@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<otrs_config version="1.0" init="Application">
-    <ConfigItem Name="Frontend::Output::FilterElementPost###SupportQuota" Required="0" Valid="1">
+<otrs_config version="2.0" init="Application">
+    <Setting Name="Frontend::Output::FilterElementPost###SupportQuota" Required="0" Valid="1">
         <Description Translatable="1">Shows the customer support quota widget in the ticket zoom view.</Description>
-        <Group>Ticket</Group>
-        <SubGroup>Frontend::Agent::Ticket::ViewZoom</SubGroup>
-        <Setting>
+        <Navigation>Frontend::Agent::View::TicketZoom</Navigation>
+        <Value>
             <Hash>
                 <Item Key="Module">Kernel::Output::HTML::OutputFilter::SupportQuota</Item>
                 <Item Key="Templates">
@@ -13,13 +12,12 @@
                     </Hash>
                 </Item>
             </Hash>
-        </Setting>
-    </ConfigItem>
-    <ConfigItem Name="Frontend::Output::FilterElementPost###SupportQuotaCustomer" Required="0" Valid="1">
+        </Value>
+    </Setting>
+    <Setting Name="Frontend::Output::FilterElementPost###SupportQuotaCustomer" Required="0" Valid="1">
         <Description Translatable="1">Shows the customer support quota widget in the customer interface.</Description>
-        <Group>Ticket</Group>
-        <SubGroup>Frontend::Customer::Ticket::Overview</SubGroup>
-        <Setting>
+        <Navigation>Frontend::Customer::Ticket::Overview</Navigation>
+        <Value>
             <Hash>
                 <Item Key="Module">Kernel::Output::HTML::OutputFilter::SupportQuotaCustomer</Item>
                 <Item Key="Templates">
@@ -28,40 +26,34 @@
                     </Hash>
                 </Item>
             </Hash>
-        </Setting>
-    </ConfigItem>
-    <ConfigItem Name="SupportQuota::Preferences::Recurrence" Required="0" Valid="1">
+        </Value>
+    </Setting>
+    <Setting Name="SupportQuota::Preferences::Recurrence" Required="0" Valid="1">
         <Description Translatable="1">Quota recurrence period.</Description>
-        <Group>SupportQuota</Group>
-        <SubGroup>SupportQuota::Preferences</SubGroup>
-        <Setting>
-            <Option SelectedID="month">
-                <Item Key="month" Translatable="1">Monthly</Item>
-                <Item Key="year" Translatable="1">Yearly</Item>
-                <Item Key="never" Translatable="1">Disabled</Item>
-            </Option>
-        </Setting>
-    </ConfigItem>
-    <ConfigItem Name="SupportQuota::Preferences::EmptyContractDisplay" Required="0" Valid="1">
+        <Navigation>SupportQuota::Preferences</Navigation>
+        <Value>
+            <Item ValueType="Select" SelectedID="month">
+                <Item ValueType="Option" Value="month" Translatable="1">Monthly</Item>
+                <Item ValueType="Option" Value="year" Translatable="1">Yearly</Item>
+                <Item ValueType="Option" Value="never" Translatable="1">Disabled</Item>
+            </Item>
+        </Value>
+    </Setting>
+    <Setting Name="SupportQuota::Preferences::EmptyContractDisplay" Required="0" Valid="1">
         <Description Translatable="1">Display Customer Support Quota widget even if no quota is set to a customer.</Description>
-        <Group>SupportQuota</Group>
-        <SubGroup>SupportQuota::Preferences</SubGroup>
-        <Setting>
-            <Option SelectedID="0">
-                <Item Key="0" Translatable="1">No</Item>
-                <Item Key="1" Translatable="1">Yes</Item>
-            </Option>
-        </Setting>
-    </ConfigItem>
-    <ConfigItem Name="SupportQuota::Preferences::Position" Required="0" Valid="1">
+        <Navigation>SupportQuota::Preferences</Navigation>
+        <Value>
+            <Item ValueType="Checkbox">0</Item>
+        </Value>
+    </Setting>
+    <Setting Name="SupportQuota::Preferences::Position" Required="0" Valid="1">
         <Description Translatable="1">Placement of Support Quota widget in TicketZoom sidebar.</Description>
-        <Group>SupportQuota</Group>
-        <SubGroup>SupportQuota::Preferences</SubGroup>
-        <Setting>
-            <Option SelectedID="bottom">
-                <Item Key="top" Translatable="1">Top</Item>
-                <Item Key="bottom" Translatable="1">Bottom</Item>
-            </Option>
-        </Setting>
-    </ConfigItem>
+        <Navigation>SupportQuota::Preferences</Navigation>
+        <Value>
+            <Item ValueType="Select" SelectedID="bottom">
+                <Item ValueType="Option" Value="top" Translatable="1">Top</Item>
+                <Item ValueType="Option" Value="bottom" Translatable="1">Bottom</Item>
+            </Item>
+        </Value>
+    </Setting>
 </otrs_config>
